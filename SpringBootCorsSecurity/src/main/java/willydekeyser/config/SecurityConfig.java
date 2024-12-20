@@ -41,6 +41,7 @@ public class SecurityConfig {
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowCredentials(false);
 		configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://127.0.0.1:8080"));
 		configuration.setAllowedMethods(Arrays.asList("GET"));
 		configuration.setAllowedHeaders(List.of("Authorization"));
@@ -48,5 +49,18 @@ public class SecurityConfig {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
+	//@Bean
+    CorsConfigurationSource corsConfigurationSourceForJavascriptPreflightWhenHttps() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(false);
+        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTION"));
+        configuration.setAllowedHeaders(Arrays.asList("X-idp", "Authorization", "Content-Type", "x-requested-with", "authorization", "credential", "X-XSRF-TOKEN" ,"x-tenant-id"));
+        configuration.setExposedHeaders(Arrays.asList("xsrf-token", "Content-Disposition"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 }
